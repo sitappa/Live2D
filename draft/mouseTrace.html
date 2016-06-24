@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EaselJS demo: Dragging</title>
+	<!--<link href="../_shared/demo.css" rel="stylesheet" type="text/css">-->
+	<script src="http://code.createjs.com/easeljs-0.8.1.min.js"></script>
+	<script>
+		var stage, output;
+
+		function init() {
+			stage = new createjs.Stage("demoCanvas");
+			stage.mouseMoveOutside = true;
+
+			var cWidth = stage.canvas.width;
+			var cHeight = stage.canvas.height;
+			var cCenterX = cWidth/2;
+			var cCenterY = cHeight/2;
+
+			function initLayers(filename, centerX, centerY, posX, posY)
+			{
+				var layer = new createjs.Bitmap(filename);
+				layer.regX = centerX;
+	    		layer.regY = centerY;
+	    		layer.x = posX;
+	    		layer.y = posY;
+	    		return layer;
+			}
+
+
+
+
+			//face
+    		var twintail = initLayers("twintail.png", 252, 347, cCenterX, cCenterY);
+    		var head = initLayers("head.png", 252, 347, cCenterX, cCenterY);
+    		var face = initLayers("face.png", 252, 347, cCenterX, cCenterY);
+    		var eyewhite = initLayers("eyewhite.png", 252, 347, cCenterX, cCenterY);
+    		var eyeball = initLayers("eyeball.png", 252, 347, cCenterX, cCenterY);
+    		var facial = initLayers("facial.png", 252, 347, cCenterX, cCenterY);
+    		var hair = initLayers("hair.png", 252, 347, cCenterX, cCenterY);
+
+    		//body
+    		var Larm = initLayers("Larm.png", 252, 347, cCenterX, cCenterY);
+    		var Rarm = initLayers("Rarm.png", 252, 347, cCenterX, cCenterY);
+    		var body = initLayers("body.png", 252, 347, cCenterX, cCenterY);
+    		//var dress = initLayers("dress.png", 252, 347, cCenterX, cCenterY);
+    		var botton = initLayers("botton.png", 252, 347, cCenterX, cCenterY);
+    		var hand = initLayers("hand.png", 252, 347, cCenterX, cCenterY);
+
+
+
+    		var spritesheet1 = new createjs.SpriteSheet({
+				/*framerate: 24,
+				"images": ["spritesheet_grant.png"],
+				"frames": {"regX": 50, "height": 100, "count": 2, "regY": 50, "width": 100},
+				// define two animations, run (loops, 1.5x speed) and jump (returns to run):
+				"animations": 
+				{
+					"run": [0, 1, "run", 0.5],
+				}*/
+				framerate: 30,
+				"images": ["spritesheet_grant.png"],
+				"frames": {"regX": 82, "height": 292, "count": 64, "regY": 0, "width": 165},
+				//"frames": {"regX": 50, "height": 100, "count": 2, "regY": 50, "width": 100},
+				// define two animations, run (loops, 1.5x speed) and jump (returns to run):
+				"animations": {
+					"run": [0, 25, "run", 1.5],
+					"jump": [26, 63, "run"]
+				}
+			});
+
+
+    		var sprite1 = new createjs.Sprite(spritesheet1,"run");
+
+
+
+
+
+
+
+
+			//stage.addChild(sprite1);
+
+			stage.addChild(face);
+			stage.addChild(head);
+			stage.addChild(eyewhite);
+			stage.addChild(eyeball);
+			stage.addChild(facial);
+			stage.addChild(hair);
+			stage.addChild(twintail);
+
+
+			stage.addChild(Larm);
+			stage.addChild(Rarm);
+			stage.addChild(body);
+			//stage.addChild(dress);
+			stage.addChild(botton);
+			stage.addChild(hand);
+
+
+
+
+			function getNewPosition(evt, obj, x, y, xRange, yRange)
+			{
+				var mouseX = evt.stageX-cCenterX;
+				mouseX = (mouseX > 400)? 400: mouseX;
+				mouseX = (mouseX < -400)? -400: mouseX;
+				var difX = (mouseX/xRange)+x - obj.x;
+		        var difY = ((evt.stageY-cCenterY)/yRange)+y - obj.y;
+
+		        obj.x += difX / 10;
+		        obj.y += difY / 10;
+			}
+
+			stage.on("stagemousemove",function(evt) {
+
+		        //getNewPosition(evt, sprite1, cWidth/2, cHeight/2, 10, 10);
+		        getNewPosition(evt, twintail, 750, 350, -25, -20);
+		        getNewPosition(evt, head, 750, 350, -200, -200);
+		        getNewPosition(evt, face, 750, 350, 100, 100);
+		        getNewPosition(evt, facial, 750, 350, 50, 70);
+		        getNewPosition(evt, eyeball, 750, 350, 60, 60);
+		        getNewPosition(evt, eyewhite, 750, 350, 50, 70);
+		        getNewPosition(evt, hair, 750, 350, 35, 40);
+
+
+		        getNewPosition(evt, Larm, 750, 350, -100, -700);
+		        getNewPosition(evt, Rarm, 750, 350, -100, -700);
+		        getNewPosition(evt, body, 750, 350, 100, 1000);
+		        //getNewPosition(evt, dress, 750, 350, 100, 100);
+		        getNewPosition(evt, botton, 750, 350, 40, 1000);
+		        getNewPosition(evt, hand, 750, 350, 70, 70);
+
+
+
+
+
+			});
+
+			createjs.Ticker.timingMode = createjs.Ticker.RAF;
+			createjs.Ticker.addEventListener("tick", stage);
+
+			function tick(event) {
+				stage.update(event);
+			}
+
+		}
+	</script>
+</head>
+<body onload="init();" style="text-align:center;">
+	<canvas id="demoCanvas" width= "1500" height="700" style="background:white;text-align:center; margin-top:100px">
+		alternate content
+	</canvas>
+</body>
+</html>
